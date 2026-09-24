@@ -9,7 +9,7 @@ import styles from './Todo.module.scss'
 
 const Todo = () => {
   
-  const { firstIncompleteTaskRef } = useContext(TasksContext)
+  const { firstIncompleteTaskRef } = useContext(TasksContext) as any
     
   return (
     <div className={styles.todo}>
@@ -18,7 +18,7 @@ const Todo = () => {
       <SearchTaskForm styles={styles} />
       <TodoInfo styles={styles} />
       <Button 
-        onClick={() => firstIncompleteTaskRef.current?.scrollIntoView({behavior:"smooth"})}
+        onClick={() => firstIncompleteTaskRef?.current?.scrollIntoView({behavior:"smooth"})}
          > 
           Show first incomplete task
       </Button>

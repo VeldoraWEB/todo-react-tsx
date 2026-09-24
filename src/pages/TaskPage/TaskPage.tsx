@@ -1,12 +1,19 @@
 import tasksAPI from "@/shared/api/tasks"
 import { useState, useEffect, } from "react"
+import { Task } from "@/shared/api/tasks/local";
 
-const TaskPage = (props) => {
+interface TaskPageProps {
+    params: {
+       id: string;
+    }
+}
+
+const TaskPage = (props: TaskPageProps) => {
 
     const { params } = props
     const taskId = params.id
 
-    const [task, setTask] = useState(null)
+    const [task, setTask] = useState<Task | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [hasError, setHasError] = useState(false)
 
@@ -23,13 +30,13 @@ const TaskPage = (props) => {
             setIsLoading(false)
           })
 
-    }, [])
+    }, [taskId])
     
     if (isLoading) {
         return <div>Loading..</div>
     }
 
-    if (hasError) {
+    if (hasError || !task) {
         return <div>Task not found</div>
     }
 

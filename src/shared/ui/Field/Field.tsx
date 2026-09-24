@@ -1,11 +1,23 @@
+import { ReactNode } from 'react'
 import styles from './Field.module.scss'
 
-const Field = (props) => {
+interface FieldProps {
+  className?: string;
+  id?: string;
+  label?: string;
+  value?: string;
+  onInput?: (e: any) => void;
+  type?: string;
+  error?: string;
+  ref?: any;
+}
+
+const Field = (props: FieldProps) => {
     const {
       className = '',
       id,
       label,
-      type = 'test',
+      type = 'text',
       value,
       onInput,
       ref,

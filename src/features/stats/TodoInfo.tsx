@@ -1,20 +1,24 @@
 import { memo, useContext, useMemo } from 'react'
 import { TasksContext } from '@/entities/todo'
 
-const TodoInfo = (props) => {
+interface TodoInfoProps {
+  styles: Record<string, string>;
+}
+
+const TodoInfo = (props: TodoInfoProps) => {
     const { styles } = props
     const {
       tasks,
       deleteAllTasks,
-    } = useContext(TasksContext)
+    } = useContext(TasksContext) as any
 
     const total = tasks.length
 
     const hasTasks = total > 0
 
     const done = useMemo(() => {
-       return tasks.filter(({isDone}) => isDone).length
-    }, [tasks])
+       return tasks.filter((task: any) => task.isDone).length
+    }, [tasks]) 
     
     return (
       <div className={styles.info}>

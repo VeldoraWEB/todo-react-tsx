@@ -1,6 +1,13 @@
 const STORAGE_KEY = 'tasks'
 
-const read = () => {
+export interface Task {
+    id: string;
+    title: string;
+    isDone: boolean;
+    [key: string]: any;
+}
+
+const read = (): Task[] => {
     try {
        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
     } catch (error)  {
@@ -8,7 +15,7 @@ const read = () => {
     }
 }
 
-const write = (tasks) => {
+const write = (tasks: Task[]) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
 }
 
@@ -17,33 +24,32 @@ const delay = (ms = 150) => {
 }
 
 const localAPI = {
-    getAll: async () => { 
+    getAll: async (): Promise<Task[]> => { 
         await delay()
-
         return read()
     },
-    getById: async (id) => {
+
+    getById: async (id: string): Promise<Task | null> => {
         await delay()
         return read()
           .find(task => task.id === id) ?? null
-
-
     },
 
-    add: async (task) => {
+    add: async (task: Partial<Task>): Promise<Task> => {
         await delay()
 
-        const newTask = {
+        const newTask: Task = {
+            title: '',
+            isDone: false,
             ...task,
             id: crypto?.randomUUID() ?? Date.now().toString()
         }
 
         write([...read(), newTask])
-
         return newTask
     },
 
-    delete: async (id) => {
+    delete: async (id: string): Promise<void> => {
         await delay()
 
         const tasks = read().filter((task) => task.id !== id)
@@ -53,14 +59,14 @@ const localAPI = {
 
     },
 
-    deleteAll: async (tasks) => {
+    deleteAll: async (): Promise<void> => {
         await delay()
 
         write([])
 
     },
 
-    toggleComplete: async (id, isDone) => {
+    toggleComplete: async (id: string, isDone: boolean): Promise<void> => {
         await delay()
 
         const tasks = read()

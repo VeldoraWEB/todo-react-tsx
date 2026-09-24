@@ -1,5 +1,6 @@
-const useCombinedRefs = (...refs) => {
-    return(node) => {
+import { ForwardedRef } from "react"
+const useCombinedRefs = (...refs: ForwardedRef<any>[]) => {
+    return(node: HTMLElement | null) => {
         refs.forEach((ref) => {
             if (!ref) {
                 return
@@ -7,7 +8,7 @@ const useCombinedRefs = (...refs) => {
             if (typeof ref === 'function') {
                 ref(node)
             } else {
-                ref.current = node
+                (ref as any).current = node
             }
         })
     }

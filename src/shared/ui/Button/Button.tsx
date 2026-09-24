@@ -1,6 +1,15 @@
+import { ReactNode } from 'react'
 import styles from './Button.module.scss'
 
-const Button = (props) => {
+interface ButtonProps {
+  className?: string;
+  isDisabled?: boolean;
+  onClick?: () => void;
+  children: ReactNode 
+  type?:'button' | 'submit' | 'reset';
+}
+
+const Button = (props: ButtonProps) => {
     const {
       className = '',
       type = 'button',

@@ -1,5 +1,10 @@
 import { BASE_URL } from "@/shared/constants"
 import { useEffect, useState } from "react"
+import { ComponentType } from "react"
+
+interface RouterProps {
+    routes: Record<string, ComponentType<any>>;
+}
 
 const getCurrentPath = () => {
     const pathname = window.location.pathname
@@ -9,7 +14,7 @@ const getCurrentPath = () => {
       : pathname
 }
 
-const matchPath = (path, route) => {
+const matchPath = (path: string, route: string): Record<string, string> | null => {
     const pathParts = path.split('/')
     const routePaths = route.split('/')
 
@@ -17,7 +22,7 @@ const matchPath = (path, route) => {
         return null
     }
 
-    const params = {}
+    const params: Record<string, string> = {}
 
     for (let i = 0; i < routePaths.length; i++) {
         if (routePaths[i].startsWith(':')) {
@@ -50,7 +55,7 @@ export const useRoute = () => {
     return path
 }
 
-const Router = (props) => {
+const Router = (props: RouterProps) => {
 
     const { routes } = props
     const path = useRoute()
@@ -64,7 +69,7 @@ const Router = (props) => {
         }
     }
 
-    const NotFound = routes['*']
+    const NotFound = routes['*'] || (() => <div>404 Not Found</div>)
     
     return <NotFound />
 

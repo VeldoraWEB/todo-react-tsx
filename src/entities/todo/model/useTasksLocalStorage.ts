@@ -1,12 +1,15 @@
+import { Task } from "@/shared/api/tasks/local"
+
 const useTasksLocalStorage = () => {
     const savedTasks = localStorage.getItem('tasks')
 
-    const saveTasks = (tasks) => {
+    const saveTasks = (tasks: Task[]) => {
        localStorage.setItem('tasks', JSON.stringify(tasks))
     }
 
+
     return {
-        savedTasks: savedTasks ? JSON.parse(savedTasks) : null,
+        savedTasks: savedTasks ? JSON.parse(savedTasks) as Task[] : null,
         saveTasks,
     }
 }

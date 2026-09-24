@@ -9,6 +9,9 @@ export default defineConfig((mode) => {
   return {
     base: isProd ? '/todo-react/' : '/',
     plugins: [react()],
+    server: {
+      open: true,
+    },
     resolve: { 
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

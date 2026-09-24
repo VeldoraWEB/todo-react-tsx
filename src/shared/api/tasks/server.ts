@@ -1,3 +1,4 @@
+import { Task } from './local'
 const URL = 'http://localhost:3001/tasks'
 
 const headers = {
@@ -5,16 +6,16 @@ const headers = {
         }
 
 const serverAPI = {
-    getAll: () => {
+    getAll: (): Promise<Task[]> => {
       return fetch(URL).then((response) => response.json())
     },
 
-    getById: (id) => {
+    getById: (id: string): Promise<Task> => {
       return fetch(`${URL}/${id}`)
          .then((response) => response.json())
     },
 
-    add: (task) => {
+    add: (task: Partial<Task>): Promise<Task> => {
      return fetch(URL, {
        method: 'POST',
        headers,
@@ -23,19 +24,19 @@ const serverAPI = {
       .then((response) => response.json())
     },
 
-    delete: (id) => {
-      return fetch(`${URL}/${id}`, { method: 'Delete', })
+    delete: (id: string): Promise<Response> => {
+      return fetch(`${URL}/${id}`, { method: 'DELETE', })
     },
 
-    deleteAll: (tasks) => {
+    deleteAll: (tasks: Task[]): Promise<Response[]> => {
         return Promise.all(
-            tasks.map(({id}) => {
+            tasks.map(({ id }) => {
                 return serverAPI.delete(id)
             })
           )
     },
 
-    toggleComplete: (id, isDone) => {
+    toggleComplete: (id: string, isDone: boolean): Promise<Response> => {
         return fetch(`${URL}/${id}`, {
           method: 'PATCH',
           headers,

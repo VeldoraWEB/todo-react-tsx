@@ -1,9 +1,13 @@
-import { useContext, useState } from "react"
+import { FormEvent, useContext, useState } from "react"
 import Button from "@/shared/ui/Button"
 import Field from "@/shared/ui/Field"
 import { TasksContext } from "@/entities/todo"
 
-const AddTaskForm = (props) => {
+interface AddTaskFormProps {
+  styles: Record<string, string>;
+}
+
+const AddTaskForm = (props: AddTaskFormProps) => {
 
     const { styles } = props
 
@@ -12,14 +16,14 @@ const AddTaskForm = (props) => {
     const { 
       addTask,
       newTaskInputRef,
-    } = useContext(TasksContext)
+    } = useContext(TasksContext) as any
 
     const [error, setError] = useState('')
 
     const clearNameTaskTitle = newTaskTitle.trim()
     const isNewTaskEmpty = clearNameTaskTitle.length === 0
 
-    const onSubmit = (event) => {
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       if (!isNewTaskEmpty) {
          addTask(
@@ -29,8 +33,9 @@ const AddTaskForm = (props) => {
       }
     }
 
-    const onInput = (event) => {
-      const { value } = event.target 
+    const onInput = (event: FormEvent<HTMLInputElement> ) => {
+      const target = event.target as HTMLInputElement
+      const { value } = target
       const clearValue = value.trim()
       const hasOnlySpaces = value.length >0 && clearValue.length === 0
       setNewTaskTitle(value)

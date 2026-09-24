@@ -1,11 +1,31 @@
-import { createContext, useMemo } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 import useTasks from "./useTasks";
 import useIncompleteTaskScroll from "./useIncompleteTaskScroll";
+import { Task } from "@/shared/api/tasks/local";
 
-export const TasksContext = createContext({})
+interface TasksContextType {
+  tasks: Task[];
+  filteredTasks: Task[];
+  deleteTask: (id: string) => void;
+  deleteAllTasks: () => void;
+  toggleTaskComplete: (id: string, isDone: boolean) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  newTaskInputRef: any;
+  addTask: (title: string) => void;
+  disappearingTaskId: string | null;
+  appearingTaskId: string | null;
+  firstIncompleteTaskRef: any;
+  firstIncompleteTaskId: string | null;
+}
 
-export const TasksProvider = (props) => {
-    const { children } = props
+interface TasksProviderProps {
+  children: ReactNode;
+}
+
+export const TasksContext = createContext<TasksContextType | null>(null)
+
+export const TasksProvider = ({ children }:  TasksProviderProps) => {
     
     const {
       tasks,
@@ -19,14 +39,14 @@ export const TasksProvider = (props) => {
       addTask,
       disappearingTaskId,
       appearingTaskId,
-    } = useTasks()
+    } = useTasks() as any
 
     const {
       firstIncompleteTaskRef,
       firstIncompleteTaskId,
-    } = useIncompleteTaskScroll(tasks)
+    } = useIncompleteTaskScroll(tasks) as any
 
-    const value = useMemo(() => ({
+    const value = useMemo<TasksContextType>(() => ({
       tasks,
       filteredTasks,
       deleteTask,

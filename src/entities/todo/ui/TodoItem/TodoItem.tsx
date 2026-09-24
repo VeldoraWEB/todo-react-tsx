@@ -4,7 +4,14 @@ import RouterLink from '@/shared/ui/RouterLink'
 import styles from './TodoItem.module.scss'
 import { highlightCaseInsensitive } from '@/shared/utils/highlight'
 
-const TodoItem = (props) => {
+interface TodoItemProps {
+  className?: string;
+  id?: string;
+  title?: string;
+  isDone?: boolean;
+}
+
+const TodoItem = (props: TodoItemProps) => {
   const {
     className = '',
     id,
